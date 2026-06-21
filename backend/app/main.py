@@ -44,13 +44,7 @@ def new_job(company_name: str, job_title: str, status: str) -> Job:
     )
 
 
-job_applications = [
-    new_job("Figma", "FullStack Software Engineer", "Applied"),
-    new_job("Meta", "FullStack Software Engineer", "Rejected"),
-    new_job("dbt Labs", "Senior Customer Solutions Engineer", "Rejected"),
-    new_job("n8n", "Senior Customer Support Engineer", "Interviewing"),
-    new_job("Amazon", "L5 Frontend Software Engineer", "Rejected"),
-]
+job_applications = []
 
 
 @app.get("/health")
