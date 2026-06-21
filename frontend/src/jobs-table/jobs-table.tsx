@@ -48,14 +48,18 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
     <table>
       <thead>
         <tr>
+          <th>Date Applied</th>
           <th>Company Name</th>
           <th>Job Title</th>
           <th>Application Status</th>
+          <th>Resume</th>
+          <th>Delete?</th>
         </tr>
       </thead>
       <tbody>
         {jobs.map((job) => (
           <tr key={job.id}>
+            <td>{job.date}</td>
             <td>{job.companyName}</td>
             <td>{job.jobTitle}</td>
             <td>
@@ -75,6 +79,9 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
                 <option value="Rejected">Rejected</option>
                 <option value="Accepted">Accepted</option>
               </select>
+            </td>
+            <td>
+              <input type="file" />
             </td>
             <td>
               <Button

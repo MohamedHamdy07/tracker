@@ -3,4 +3,5 @@ export type Job = {
   companyName: string;
   jobTitle: string;
   status: "Applied" | "Interviewing" | "Offer" | "Rejected" | "Accepted";
+  date: string;
 };

@@ -13,6 +13,7 @@ export function JobsForm() {
     companyName: string;
     jobTitle: string;
     status: string;
+    date: string;
   };
 
   const mutation = useMutation<unknown, Error, JobInput>({
@@ -41,10 +42,12 @@ export function JobsForm() {
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const date = new Date();
     const newJob = {
       companyName: companyName,
       jobTitle: jobTitle,
       status: status,
+      date: date.toLocaleDateString(),
     };
     mutation.mutate(newJob);
     setCompanyName("");

@@ -39,18 +39,20 @@ class JobBase(BaseModel):
     company_name: str
     job_title: str
     status: JobStatus
+    date: str
 
 
 class Job(JobBase):
     id: int
 
 
-def new_job(company_name: str, job_title: str, status: str) -> Job:
+def new_job(company_name: str, job_title: str, status: str, date: str) -> Job:
     return Job(
         id=next(_next_id),
         company_name=company_name,
         job_title=job_title,
         status=status,
+        date=date,
     )
 
 
