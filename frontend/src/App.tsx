@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import "./App.css";
 import { JobsForm } from "./jobs-form/jobs-form";
 import { JobsTable } from "./jobs-table/jobs-table";
