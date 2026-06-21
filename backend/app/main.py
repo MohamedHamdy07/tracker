@@ -1,6 +1,6 @@
 from itertools import count
 
-from fastapi import FastAPI, status
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
@@ -62,3 +62,13 @@ def create_application(job: JobBase) -> Job:
     new_application = new_job(**job.model_dump())
     job_applications.append(new_application)
     return new_application
+
+
+@app.delete("/applications/{job_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_application(job_id: int) -> None:
+    job = next((j for j in job_applications if j.id == job_id), None)
+    if job is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Application not found"
+        )
+    job_applications.remove(job)
