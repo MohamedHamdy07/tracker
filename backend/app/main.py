@@ -1,3 +1,4 @@
+from datetime import date
 from enum import StrEnum
 from itertools import count
 
@@ -39,7 +40,7 @@ class JobBase(BaseModel):
     company_name: str
     job_title: str
     status: JobStatus
-    date: str
+    date: date
 
 
 class Job(JobBase):

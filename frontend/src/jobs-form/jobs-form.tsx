@@ -41,12 +41,12 @@ export function JobsForm() {
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const date = new Date();
+    const date = new Date().toISOString().slice(0, 10);
     const newJob = {
       companyName: companyName,
       jobTitle: jobTitle,
       status: status,
-      date: date.toLocaleDateString(),
+      date: date,
     };
     mutation.mutate(newJob);
     setCompanyName("");
