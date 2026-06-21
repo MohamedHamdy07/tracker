@@ -12,6 +12,7 @@ function App() {
 
   return (
     <>
+      <h1>Job Application Tracker</h1>
       <JobsTable jobs={jobs || []} />
       <JobsForm />
     </>

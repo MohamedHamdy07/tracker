@@ -1,9 +1,19 @@
+from enum import StrEnum
 from itertools import count
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
+
+
+class JobStatus(StrEnum):
+    applied = "Applied"
+    interviewing = "Interviewing"
+    offer = "Offer"
+    rejected = "Rejected"
+    accepted = "Accepted"
+
 
 app = FastAPI()
 
@@ -28,7 +38,7 @@ class JobBase(BaseModel):
 
     company_name: str
     job_title: str
-    status: str
+    status: JobStatus
 
 
 class Job(JobBase):
@@ -72,3 +82,14 @@ def delete_application(job_id: int) -> None:
             status_code=status.HTTP_404_NOT_FOUND, detail="Application not found"
         )
     job_applications.remove(job)
+
+
+@app.patch("/applications/{job_id}")
+def update_application_status(job_id: int, new_status: JobStatus) -> Job:
+    job = next((j for j in job_applications if j.id == job_id), None)
+    if job is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Application not found"
+        )
+    job.status = new_status
+    return job

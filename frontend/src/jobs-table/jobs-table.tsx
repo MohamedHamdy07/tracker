@@ -8,18 +8,40 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
 
   const deleteMutation = useMutation({
     mutationFn: async (jobId: number) => {
-      // id comes in as the argument
       const response = await fetch(
         `http://localhost:8000/applications/${jobId}`,
         { method: "DELETE" },
       );
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      // 204 No Content — nothing to parse, return nothing
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["applications"] });
     },
     onError: (error) => console.error("Error deleting job:", error),
+  });
+
+  const updateMutation = useMutation<
+    void,
+    Error,
+    { jobId: number; new_status: string }
+  >({
+    mutationFn: async ({ jobId, new_status }) => {
+      const params = new URLSearchParams({ new_status });
+
+      const response = await fetch(
+        `http://localhost:8000/applications/${jobId}?${params}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: new_status }),
+        },
+      );
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["applications"] });
+    },
+    onError: (error) => console.error("Error updating job:", error),
   });
 
   return (
@@ -36,7 +58,24 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
           <tr key={job.id}>
             <td>{job.companyName}</td>
             <td>{job.jobTitle}</td>
-            <td>{job.status}</td>
+            <td>
+              <select
+                name="status"
+                defaultValue={job.status}
+                onChange={(e) =>
+                  updateMutation.mutate({
+                    jobId: job.id,
+                    new_status: e.target.value,
+                  })
+                }
+              >
+                <option value="Applied">Applied</option>
+                <option value="Interviewing">Interviewing</option>
+                <option value="Offer">Offer</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Accepted">Accepted</option>
+              </select>
+            </td>
             <td>
               <Button
                 variant="outlined"
