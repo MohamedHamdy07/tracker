@@ -1,42 +1,33 @@
 import { Button } from "@mui/material";
 import "./App.css";
 import { JobsForm } from "./jobs-form/jobs-form";
-import { JobsTable } from "./jobs-table/jobs-table";
-import { useJobs } from "./use-jobs";
-import { useState } from "react";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { ApplicationDashboard } from "./pages/application-dashboard";
+import { NewApplicationPage } from "./pages/new-application-page";
 
 function App() {
-  const [open, setOpen] = useState(false);
-  const { data: jobs, isLoading, isError } = useJobs();
-
-  if (isLoading) return <p>Loading applications…</p>;
-  if (isError) return <p>Couldn't load applications.</p>;
-
   return (
-    <>
+    <BrowserRouter>
+      <nav>
+        <Button variant="outlined">
+          <Link to="/home">Home</Link>
+        </Button>
+        <Button variant="outlined">
+          <Link to="/applications">Application Dashboard</Link>
+        </Button>
+        <Button variant="outlined">
+          <Link to="/new-application">Submit a new application</Link>
+        </Button>
+      </nav>
       <div className="table-header">
         <h1 style={{ flex: 1 }}>Job Application Tracker</h1>
-        <Button
-          variant="outlined"
-          sx={{
-            width: 40,
-            height: 40,
-            minWidth: 40,
-            marginRight: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 0,
-          }}
-          onClick={() => setOpen(!open)}
-        >
-          +
-        </Button>
       </div>
-
-      <JobsTable jobs={jobs || []} />
-      <JobsForm open={open} onClose={() => setOpen(false)} />
-    </>
+      <Routes>
+        <Route path="/home" />
+        <Route path="/applications" element={<ApplicationDashboard />} />
+        <Route path="new-application" element={<NewApplicationPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Modal from "@mui/material/Modal";
-import { Box } from "@mui/material";
 
-export function JobsForm({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
+export function JobsForm() {
   const [companyName, setCompanyName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [status, setStatus] = useState("Applied");
@@ -60,73 +52,52 @@ export function JobsForm({
     setCompanyName("");
     setJobTitle("");
     setStatus("Applied");
-    onClose();
   };
 
   return (
-    <Modal
-      open={open}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "8px",
-      }}
-    >
-      <Box
-        sx={{
-          bgcolor: "#1e1e1e",
-          color: "rgba(255,255,255,0.87)",
-          border: "1px solid rgba(255,255,255,0.12)",
-          borderRadius: 2,
-          boxShadow: 24,
-          p: 4,
-          width: 400,
+    <>
+      <h2 style={{ padding: "8px" }}>Add new application</h2>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "8px",
+          gap: "8px",
         }}
       >
-        <h2 style={{ padding: "8px" }}>Add new application</h2>
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "8px",
-            gap: "8px",
-          }}
-        >
-          <div>
-            <label>Company Name </label>
-            <input
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-            ></input>
-          </div>
-          <div>
-            <label>Job Title </label>
-            <input
-              value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
-            ></input>
-          </div>
-          <div>
-            <label>Status </label>
-            <select
-              name="status"
-              onChange={(e) => setStatus(e.target.value)}
-              value={status}
-            >
-              <option value="Applied">Applied</option>
-              <option value="Interviewing">Interviewing</option>
-              <option value="Offer">Offer</option>
-              <option value="Rejected">Rejected</option>
-              <option value="Accepted">Accepted</option>
-            </select>
-          </div>
-          <button type="submit">Submit</button>
-        </form>
-      </Box>
-    </Modal>
+        <div>
+          <label>Company Name </label>
+          <input
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <label>Job Title </label>
+          <input
+            value={jobTitle}
+            onChange={(e) => setJobTitle(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <label>Status </label>
+          <select
+            name="status"
+            onChange={(e) => setStatus(e.target.value)}
+            value={status}
+          >
+            <option value="Applied">Applied</option>
+            <option value="Interviewing">Interviewing</option>
+            <option value="Offer">Offer</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Accepted">Accepted</option>
+          </select>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </>
   );
 }
