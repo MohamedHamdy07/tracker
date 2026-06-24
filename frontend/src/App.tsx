@@ -8,31 +8,6 @@ import { HomePage } from "./pages/home-page";
 function App() {
   return (
     <BrowserRouter>
-<<<<<<< ours
-      <nav>
-        <Button component={Link} to="/home" variant="outlined">
-          Home
-        </Button>
-        <Button component={Link} to="/applications" variant="outlined">
-          Application Dashboard
-        </Button>
-        <Button component={Link} to="/new-application" variant="outlined">
-          Submit a new application
-        </Button>
-        <Button component={Link} to="/analytics" variant="outlined">
-          Analytics
-        </Button>
-      </nav>
-      <div className="table-header">
-        <h1 style={{ flex: 1 }}>Job Application Tracker</h1>
-      </div>
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/applications" element={<ApplicationDashboard />} />
-        <Route path="/new-application" element={<NewApplicationPage />} />
-      </Routes>
-=======
       <AppBar
         position="static"
         color="transparent"
@@ -67,7 +42,6 @@ function App() {
           <Route path="/new-application" element={<NewApplicationPage />} />
         </Routes>
       </Container>
->>>>>>> theirs
     </BrowserRouter>
   );
 }
