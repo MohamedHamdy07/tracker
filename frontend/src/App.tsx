@@ -18,6 +18,9 @@ function App() {
         <Button component={Link} to="/new-application" variant="outlined">
           Submit a new application
         </Button>
+        <Button component={Link} to="/analytics" variant="outlined">
+          Analytics
+        </Button>
       </nav>
       <div className="table-header">
         <h1 style={{ flex: 1 }}>Job Application Tracker</h1>
