@@ -1,0 +1,432 @@
+diff --git a/frontend/src/App.css b/frontend/src/App.css
+index 7869174..88f76c1 100644
+--- a/frontend/src/App.css
++++ b/frontend/src/App.css
+@@ -10,12 +10,6 @@
+   gap: 8px;
+ }
+ 
+-table,
+-th,
+-td {
+-  border: 1px solid;
+-}
+-
+ .table-header {
+   display: flex;
+   flex-direction: row;
+diff --git a/frontend/src/App.tsx b/frontend/src/App.tsx
+index 557417e..24bb26f 100644
+--- a/frontend/src/App.tsx
++++ b/frontend/src/App.tsx
+@@ -1,4 +1,4 @@
+-import { Button } from "@mui/material";
++import { AppBar, Toolbar, Button, Container, Box } from "@mui/material";
+ import "./App.css";
+ import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+ import { ApplicationDashboard } from "./pages/application-dashboard";
+@@ -8,26 +8,40 @@ import { HomePage } from "./pages/home-page";
+ function App() {
+   return (
+     <BrowserRouter>
+-      <nav>
+-        <Button component={Link} to="/home" variant="outlined">
+-          Home
+-        </Button>
+-        <Button component={Link} to="/applications" variant="outlined">
+-          Application Dashboard
+-        </Button>
+-        <Button component={Link} to="/new-application" variant="outlined">
+-          Submit a new application
+-        </Button>
+-      </nav>
+-      <div className="table-header">
+-        <h1 style={{ flex: 1 }}>Job Application Tracker</h1>
+-      </div>
+-      <Routes>
+-        <Route path="/" element={<Navigate to="/home" replace />} />
+-        <Route path="/home" element={<HomePage />} />
+-        <Route path="/applications" element={<ApplicationDashboard />} />
+-        <Route path="/new-application" element={<NewApplicationPage />} />
+-      </Routes>
++      <AppBar
++        position="static"
++        color="transparent"
++        elevation={0}
++        sx={{ borderBottom: 1, borderColor: "divider" }}
++      >
++        <Toolbar sx={{ gap: 1 }}>
++          <Box sx={{ fontWeight: 700, fontSize: "1.1rem", mr: 2 }}>
++            Job Tracker
++          </Box>
++          <Button component={Link} to="/home" color="inherit">
++            Home
++          </Button>
++          <Button component={Link} to="/applications" color="inherit">
++            Dashboard
++          </Button>
++          <Button
++            component={Link}
++            to="/new-application"
++            variant="contained"
++            sx={{ ml: "auto" }}
++          >
++            New Application
++          </Button>
++        </Toolbar>
++      </AppBar>
++      <Container maxWidth="lg" sx={{ py: 4 }}>
++        <Routes>
++          <Route path="/" element={<Navigate to="/home" replace />} />
++          <Route path="/home" element={<HomePage />} />
++          <Route path="/applications" element={<ApplicationDashboard />} />
++          <Route path="/new-application" element={<NewApplicationPage />} />
++        </Routes>
++      </Container>
+     </BrowserRouter>
+   );
+ }
+diff --git a/frontend/src/index.css b/frontend/src/index.css
+index 5fb3313..293d3b1 100644
+--- a/frontend/src/index.css
++++ b/frontend/src/index.css
+@@ -1,111 +1,3 @@
+-:root {
+-  --text: #6b6375;
+-  --text-h: #08060d;
+-  --bg: #fff;
+-  --border: #e5e4e7;
+-  --code-bg: #f4f3ec;
+-  --accent: #aa3bff;
+-  --accent-bg: rgba(170, 59, 255, 0.1);
+-  --accent-border: rgba(170, 59, 255, 0.5);
+-  --social-bg: rgba(244, 243, 236, 0.5);
+-  --shadow:
+-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+-
+-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+-  --mono: ui-monospace, Consolas, monospace;
+-
+-  font: 18px/145% var(--sans);
+-  letter-spacing: 0.18px;
+-  color-scheme: light dark;
+-  color: var(--text);
+-  background: var(--bg);
+-  font-synthesis: none;
+-  text-rendering: optimizeLegibility;
+-  -webkit-font-smoothing: antialiased;
+-  -moz-osx-font-smoothing: grayscale;
+-
+-  @media (max-width: 1024px) {
+-    font-size: 16px;
+-  }
+-}
+-
+-@media (prefers-color-scheme: dark) {
+-  :root {
+-    --text: #9ca3af;
+-    --text-h: #f3f4f6;
+-    --bg: #16171d;
+-    --border: #2e303a;
+-    --code-bg: #1f2028;
+-    --accent: #c084fc;
+-    --accent-bg: rgba(192, 132, 252, 0.15);
+-    --accent-border: rgba(192, 132, 252, 0.5);
+-    --social-bg: rgba(47, 48, 58, 0.5);
+-    --shadow:
+-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+-  }
+-
+-  #social .button-icon {
+-    filter: invert(1) brightness(2);
+-  }
+-}
+-
+-#root {
+-  width: 1126px;
+-  max-width: 100%;
+-  margin: 0 auto;
+-  text-align: center;
+-  border-inline: 1px solid var(--border);
+-  min-height: 100svh;
+-  display: flex;
+-  flex-direction: column;
+-  box-sizing: border-box;
+-}
+-
+ body {
+   margin: 0;
+ }
+-
+-h1,
+-h2 {
+-  font-family: var(--heading);
+-  font-weight: 500;
+-  color: var(--text-h);
+-}
+-
+-h1 {
+-  font-size: 56px;
+-  letter-spacing: -1.68px;
+-  margin: 32px 0;
+-  @media (max-width: 1024px) {
+-    font-size: 36px;
+-    margin: 20px 0;
+-  }
+-}
+-h2 {
+-  font-size: 24px;
+-  line-height: 118%;
+-  letter-spacing: -0.24px;
+-  margin: 0 0 8px;
+-  @media (max-width: 1024px) {
+-    font-size: 20px;
+-  }
+-}
+-p {
+-  margin: 0;
+-}
+-
+-code,
+-.counter {
+-  font-family: var(--mono);
+-  display: inline-flex;
+-  border-radius: 4px;
+-  color: var(--text-h);
+-}
+-
+-code {
+-  font-size: 15px;
+-  line-height: 135%;
+-  padding: 4px 8px;
+-  background: var(--code-bg);
+-}
+diff --git a/frontend/src/jobs-table/jobs-table.css b/frontend/src/jobs-table/jobs-table.css
+deleted file mode 100644
+index 7f2b05d..0000000
+--- a/frontend/src/jobs-table/jobs-table.css
++++ /dev/null
+@@ -1,5 +0,0 @@
+-table,
+-th,
+-td {
+-  border: 1px solid;
+-}
+diff --git a/frontend/src/jobs-table/jobs-table.tsx b/frontend/src/jobs-table/jobs-table.tsx
+index 61ed84a..aa3c399 100644
+--- a/frontend/src/jobs-table/jobs-table.tsx
++++ b/frontend/src/jobs-table/jobs-table.tsx
+@@ -1,7 +1,28 @@
+ import { useMutation, useQueryClient } from "@tanstack/react-query";
+ import type { Job } from "../types";
+-import "./jobs-table.css";
+-import Button from "@mui/material/Button";
++import {
++  Table,
++  TableBody,
++  TableCell,
++  TableContainer,
++  TableHead,
++  TableRow,
++  Paper,
++  Chip,
++  Select,
++  MenuItem,
++  Button,
++} from "@mui/material";
++
++const STATUSES = ["Applied", "Interviewing", "Offer", "Rejected", "Accepted"];
++
++const statusColor: Record<string, "info" | "warning" | "success" | "error"> = {
++  Applied: "info",
++  Interviewing: "warning",
++  Offer: "success",
++  Accepted: "success",
++  Rejected: "error",
++};
+ 
+ export function JobsTable({ jobs }: { jobs: Job[] }) {
+   const queryClient = useQueryClient();
+@@ -30,11 +51,7 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
+ 
+       const response = await fetch(
+         `http://localhost:8000/applications/${jobId}?${params}`,
+-        {
+-          method: "PATCH",
+-          headers: { "Content-Type": "application/json" },
+-          body: JSON.stringify({ status: new_status }),
+-        },
++        { method: "PATCH" },
+       );
+       if (!response.ok) throw new Error(`HTTP ${response.status}`);
+     },
+@@ -45,55 +62,69 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
+   });
+ 
+   return (
+-    <table>
+-      <thead>
+-        <tr>
+-          <th>Date Applied</th>
+-          <th>Company Name</th>
+-          <th>Job Title</th>
+-          <th>Application Status</th>
+-          <th>Resume</th>
+-          <th>Delete?</th>
+-        </tr>
+-      </thead>
+-      <tbody>
+-        {jobs.map((job) => (
+-          <tr key={job.id}>
+-            <td>{job.date}</td>
+-            <td>{job.companyName}</td>
+-            <td>{job.jobTitle}</td>
+-            <td>
+-              <select
+-                name="status"
+-                defaultValue={job.status}
+-                onChange={(e) =>
+-                  updateMutation.mutate({
+-                    jobId: job.id,
+-                    new_status: e.target.value,
+-                  })
+-                }
+-              >
+-                <option value="Applied">Applied</option>
+-                <option value="Interviewing">Interviewing</option>
+-                <option value="Offer">Offer</option>
+-                <option value="Rejected">Rejected</option>
+-                <option value="Accepted">Accepted</option>
+-              </select>
+-            </td>
+-            <td>
+-              <input type="file" />
+-            </td>
+-            <td>
+-              <Button
+-                variant="outlined"
+-                onClick={() => deleteMutation.mutate(job.id)}
+-              >
+-                Delete
+-              </Button>
+-            </td>
+-          </tr>
+-        ))}
+-      </tbody>
+-    </table>
++    <TableContainer component={Paper} variant="outlined">
++      <Table>
++        <TableHead>
++          <TableRow>
++            <TableCell>Date Applied</TableCell>
++            <TableCell>Company</TableCell>
++            <TableCell>Job Title</TableCell>
++            <TableCell>Status</TableCell>
++            <TableCell>Resume</TableCell>
++            <TableCell align="right">Actions</TableCell>
++          </TableRow>
++        </TableHead>
++        <TableBody>
++          {jobs.map((job) => (
++            <TableRow key={job.id} hover>
++              <TableCell>{job.date}</TableCell>
++              <TableCell>{job.companyName}</TableCell>
++              <TableCell>{job.jobTitle}</TableCell>
++              <TableCell>
++                <Select
++                  value={job.status}
++                  variant="standard"
++                  disableUnderline
++                  onChange={(e) =>
++                    updateMutation.mutate({
++                      jobId: job.id,
++                      new_status: e.target.value,
++                    })
++                  }
++                  renderValue={(value) => (
++                    <Chip
++                      label={value}
++                      color={statusColor[value]}
++                      size="small"
++                    />
++                  )}
++                >
++                  {STATUSES.map((s) => (
++                    <MenuItem key={s} value={s}>
++                      {s}
++                    </MenuItem>
++                  ))}
++                </Select>
++              </TableCell>
++              <TableCell>
++                <Button component="label" size="small">
++                  Upload
++                  <input type="file" hidden />
++                </Button>
++              </TableCell>
++              <TableCell align="right">
++                <Button
++                  color="error"
++                  size="small"
++                  onClick={() => deleteMutation.mutate(job.id)}
++                >
++                  Delete
++                </Button>
++              </TableCell>
++            </TableRow>
++          ))}
++        </TableBody>
++      </Table>
++    </TableContainer>
+   );
+ }
+diff --git a/frontend/src/main.tsx b/frontend/src/main.tsx
+index 7b4d4fe..f96f8cf 100644
+--- a/frontend/src/main.tsx
++++ b/frontend/src/main.tsx
+@@ -3,13 +3,19 @@ import { createRoot } from "react-dom/client";
+ import "./index.css";
+ import App from "./App.tsx";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
++import { ThemeProvider } from "@mui/material/styles";
++import CssBaseline from "@mui/material/CssBaseline";
++import { theme } from "./theme";
+ 
+ const queryClient = new QueryClient();
+ 
+ createRoot(document.getElementById("root")!).render(
+   <StrictMode>
+-    <QueryClientProvider client={queryClient}>
+-      <App />
+-    </QueryClientProvider>
++    <ThemeProvider theme={theme}>
++      <CssBaseline />
++      <QueryClientProvider client={queryClient}>
++        <App />
++      </QueryClientProvider>
++    </ThemeProvider>
+   </StrictMode>,
+ );
+diff --git a/frontend/src/theme.ts b/frontend/src/theme.ts
+new file mode 100644
+index 0000000..55c3c35
+--- /dev/null
++++ b/frontend/src/theme.ts
+@@ -0,0 +1,16 @@
++import { createTheme } from "@mui/material/styles";
++
++export const theme = createTheme({
++  palette: {
++    mode: "dark",
++    primary: { main: "#5b9dff" }, // your blue accent, brightened for dark
++    background: {
++      default: "#16171d", // your near-black page bg
++      paper: "#1f2028", // one step lighter = "elevated" surfaces
++    },
++    text: { primary: "#f3f4f6", secondary: "#9ca3af" },
++    divider: "#2e303a",
++  },
++  shape: { borderRadius: 8 },
++  typography: { fontFamily: "system-ui, 'Segoe UI', Roboto, sans-serif" },
++});

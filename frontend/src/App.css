@@ -10,12 +10,6 @@
   gap: 8px;
 }
 
-table,
-th,
-td {
-  border: 1px solid;
-}
-
 .table-header {
   display: flex;
   flex-direction: row;

@@ -1,7 +1,28 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Job } from "../types";
-import "./jobs-table.css";
-import Button from "@mui/material/Button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Chip,
+  Select,
+  MenuItem,
+  Button,
+} from "@mui/material";
+
+const STATUSES = ["Applied", "Interviewing", "Offer", "Rejected", "Accepted"];
+
+const statusColor: Record<string, "info" | "warning" | "success" | "error"> = {
+  Applied: "info",
+  Interviewing: "warning",
+  Offer: "success",
+  Accepted: "success",
+  Rejected: "error",
+};
 
 export function JobsTable({ jobs }: { jobs: Job[] }) {
   const queryClient = useQueryClient();
@@ -30,11 +51,7 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
 
       const response = await fetch(
         `http://localhost:8000/applications/${jobId}?${params}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: new_status }),
-        },
+        { method: "PATCH" },
       );
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
     },
@@ -45,55 +62,69 @@ export function JobsTable({ jobs }: { jobs: Job[] }) {
   });
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Date Applied</th>
-          <th>Company Name</th>
-          <th>Job Title</th>
-          <th>Application Status</th>
-          <th>Resume</th>
-          <th>Delete?</th>
-        </tr>
-      </thead>
-      <tbody>
-        {jobs.map((job) => (
-          <tr key={job.id}>
-            <td>{job.date}</td>
-            <td>{job.companyName}</td>
-            <td>{job.jobTitle}</td>
-            <td>
-              <select
-                name="status"
-                defaultValue={job.status}
-                onChange={(e) =>
-                  updateMutation.mutate({
-                    jobId: job.id,
-                    new_status: e.target.value,
-                  })
-                }
-              >
-                <option value="Applied">Applied</option>
-                <option value="Interviewing">Interviewing</option>
-                <option value="Offer">Offer</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Accepted">Accepted</option>
-              </select>
-            </td>
-            <td>
-              <input type="file" />
-            </td>
-            <td>
-              <Button
-                variant="outlined"
-                onClick={() => deleteMutation.mutate(job.id)}
-              >
-                Delete
-              </Button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <TableContainer component={Paper} variant="outlined">
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Date Applied</TableCell>
+            <TableCell>Company</TableCell>
+            <TableCell>Job Title</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Resume</TableCell>
+            <TableCell align="right">Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {jobs.map((job) => (
+            <TableRow key={job.id} hover>
+              <TableCell>{job.date}</TableCell>
+              <TableCell>{job.companyName}</TableCell>
+              <TableCell>{job.jobTitle}</TableCell>
+              <TableCell>
+                <Select
+                  value={job.status}
+                  variant="standard"
+                  disableUnderline
+                  onChange={(e) =>
+                    updateMutation.mutate({
+                      jobId: job.id,
+                      new_status: e.target.value,
+                    })
+                  }
+                  renderValue={(value) => (
+                    <Chip
+                      label={value}
+                      color={statusColor[value]}
+                      size="small"
+                    />
+                  )}
+                >
+                  {STATUSES.map((s) => (
+                    <MenuItem key={s} value={s}>
+                      {s}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </TableCell>
+              <TableCell>
+                <Button component="label" size="small">
+                  Upload
+                  <input type="file" hidden />
+                </Button>
+              </TableCell>
+              <TableCell align="right">
+                <Button
+                  color="error"
+                  size="small"
+                  onClick={() => deleteMutation.mutate(job.id)}
+                >
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
