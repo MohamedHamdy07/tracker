@@ -5,7 +5,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -35,6 +35,11 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all standard HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all HTTP headers
 )
+
+
+class StatusCount(BaseModel):
+    status: JobStatus
+    count: int
 
 
 class JobBase(BaseModel):
@@ -95,3 +100,11 @@ def update_application_status(
     job.status = new_status
     db.commit()
     return job
+
+
+@app.get("/analytics/statuses")
+def get_application_status_counts(db: Session = Depends(get_db)) -> list[StatusCount]:
+    rows = db.execute(
+        select(JobDB.status, func.count(JobDB.id)).group_by(JobDB.status)
+    ).all()
+    return [StatusCount(status=status, count=count) for status, count in rows]

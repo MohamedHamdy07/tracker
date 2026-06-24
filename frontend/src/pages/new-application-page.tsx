@@ -1,4 +1,4 @@
-import { JobsForm } from "../jobs-form/jobs-form";
+import { JobsForm } from "../components/jobs-form/jobs-form";
 
 export function NewApplicationPage() {
   return <JobsForm />;

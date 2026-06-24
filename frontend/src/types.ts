@@ -5,3 +5,8 @@ export type Job = {
   status: "Applied" | "Interviewing" | "Offer" | "Rejected" | "Accepted";
   date: string;
 };
+
+export type StatusCount = {
+  status: "Applied" | "Interviewing" | "Offer" | "Rejected" | "Accepted";
+  count: number;
+};

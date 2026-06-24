@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { ApplicationDashboard } from "./pages/application-dashboard";
 import { NewApplicationPage } from "./pages/new-application-page";
 import { HomePage } from "./pages/home-page";
+import { AnalyticsPage } from "./pages/analytics-page";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
           <Button component={Link} to="/applications" color="inherit">
             Dashboard
           </Button>
+          <Button component={Link} to="/analytics" color="inherit">
+            Analytics
+          </Button>
           <Button
             component={Link}
             to="/new-application"
@@ -40,6 +44,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/applications" element={<ApplicationDashboard />} />
           <Route path="/new-application" element={<NewApplicationPage />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
         </Routes>
       </Container>
     </BrowserRouter>
